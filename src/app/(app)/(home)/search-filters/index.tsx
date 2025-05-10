@@ -1,9 +1,9 @@
-import { Search } from "lucide-react";
+import { CustomCategory } from "../types";
 import { SearchInput } from "./search-input";
 import { Categories } from "./categories";
 
 interface Props {
-    data: any;
+    data: CustomCategory[];
 };
 
 export const SearchFilters = ({

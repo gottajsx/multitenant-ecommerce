@@ -4,7 +4,7 @@ import { getQueryClient, trpc } from "@/trpc/server";
 
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
-import { SearchFilters } from "./search-filters";
+import { SearchFilters, SearchFiltersSkeleton } from "./search-filters";
 import { Suspense } from "react";
 
 
@@ -22,7 +22,7 @@ const Layout = async ({ children }: Props) => {
         <div className="flex flex-col min-h-screen">
             <Navbar />
             <HydrationBoundary state={dehydrate(queryClient)}>
-                <Suspense fallback={<p>Loading...</p>}>
+                <Suspense fallback={<SearchFiltersSkeleton />}>
                     <SearchFilters />    
                 </Suspense>
             </HydrationBoundary>

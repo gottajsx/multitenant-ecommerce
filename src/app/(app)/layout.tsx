@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 //import { Geist, Geist_Mono } from "next/font/google";
 import { DM_Sans} from "next/font/google";
 import "./globals.css";
+import { TRPCReactProvider } from "@/trpc/client";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -33,7 +34,10 @@ export default function RootLayout({
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         className={`${dmSans.className} antialiased`}
       >
-        {children}
+        <TRPCReactProvider>
+          {children}
+        </TRPCReactProvider>
+        
       </body>
     </html>
   );

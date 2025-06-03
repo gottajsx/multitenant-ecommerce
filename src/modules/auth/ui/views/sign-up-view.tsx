@@ -1,5 +1,19 @@
 "use client";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+import { 
+    Form,
+    FormControl,
+    FormField,
+    FormLabel,
+    FormMessage,
+ } from "@/components/ui/form";
+
 export const SignUpView = () => {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-5">

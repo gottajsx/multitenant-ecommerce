@@ -24,7 +24,7 @@ export const SignUpView = () => {
             email: "",
             password: "",
             username: "",
-        }
+        },
     });
 
     return (

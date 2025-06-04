@@ -16,7 +16,9 @@ import {
     FormControl,
     FormField,
     FormLabel,
+    FormItem,
     FormMessage,
+    FormDescription,
  } from "@/components/ui/form";
 import Link from "next/link";
 
@@ -27,6 +29,7 @@ const poppins = Poppins({
 
 export const SignUpView = () => {
     const form = useForm<z.infer<typeof registerSchema>>({
+        mode: "all",
         resolver: zodResolver(registerSchema),
         defaultValues: {
             email: "",
@@ -38,6 +41,11 @@ export const SignUpView = () => {
     const onSubmit = (values: z.infer<typeof registerSchema>) => {
         console.log(values);
     }
+
+    const username = form.watch("username");
+    const usernameErrors = form.formState.errors.username;
+
+    const showPreview = username && !usernameErrors;
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-5">
@@ -64,6 +72,27 @@ export const SignUpView = () => {
                                 </Link>
                             </Button>
                         </div>
+                        <h1 className="text-4xl font-medium">
+                            Join over 1000 creators earning money on Funroad.
+                        </h1>
+                        <FormField 
+                            name="username"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-base">Username</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormDescription
+                                        className={cn("hidden", showPreview && "block")}
+                                    >
+                                        Your store will be available at&nbsp;
+                                        <strong>{username}</strong>
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                     </form>
                 </Form>
             </div>

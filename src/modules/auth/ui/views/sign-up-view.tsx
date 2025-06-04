@@ -87,12 +87,45 @@ export const SignUpView = () => {
                                         className={cn("hidden", showPreview && "block")}
                                     >
                                         Your store will be available at&nbsp;
+                                        {/* TODO: user proper methog to generate preview */}
                                         <strong>{username}</strong>
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+                        <FormField 
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-base">Email</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField 
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-base">Password</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} type="password" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Button
+                            type="submit"
+                            size="lg"
+                            variant="elevated"
+                            className="bg-black text-white hover:bg-pink-400 hover:text-primary"
+                        >
+                            Create account
+                        </Button>
                     </form>
                 </Form>
             </div>

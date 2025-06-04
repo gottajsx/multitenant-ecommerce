@@ -1,16 +1,17 @@
 "use client";
 
 import z from "zod";
+import Link from "next/link";
+import { toast } from "sonner";
 import { Poppins } from "next/font/google";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { cn } from "@/lib/utils";
+import { useTRPC } from "@/trpc/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-import { registerSchema } from "../../schemas";
-import { cn } from "@/lib/utils";
-
 import { 
     Form,
     FormControl,
@@ -20,7 +21,7 @@ import {
     FormMessage,
     FormDescription,
  } from "@/components/ui/form";
-import Link from "next/link";
+import { registerSchema } from "../../schemas";
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -28,6 +29,13 @@ const poppins = Poppins({
 });
 
 export const SignUpView = () => {
+    const trpc = useTRPC();
+    const register = useMutation(trpc.auth.register.mutationOptions({
+        onError: (error) => {
+            toast.error(error.message);
+        }
+    }));
+
     const form = useForm<z.infer<typeof registerSchema>>({
         mode: "all",
         resolver: zodResolver(registerSchema),
@@ -39,7 +47,7 @@ export const SignUpView = () => {
     });
 
     const onSubmit = (values: z.infer<typeof registerSchema>) => {
-        console.log(values);
+        register.mutate(values);
     }
 
     const username = form.watch("username");
@@ -119,6 +127,7 @@ export const SignUpView = () => {
                             )}
                         />
                         <Button
+                            disabled={register.isPending}
                             type="submit"
                             size="lg"
                             variant="elevated"

@@ -1,6 +1,6 @@
 "use client";
 
-import z from "zod";
+import z, { TypeOf } from "zod";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Poppins } from "next/font/google";
@@ -9,7 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { cn } from "@/lib/utils";
-import { useTRPC } from "@/trpc/client";
+//import { useTRPC } from "@/trpc/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { 
@@ -31,16 +31,31 @@ const poppins = Poppins({
 export const SignInView = () => {
     const router = useRouter();
 
+    const login = useMutation({
+        mutationFn: async (values: z.infer<typeof loginSchema>) => {
+            const response = await fetch("api/users/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values),
+            });
 
-    const trpc = useTRPC();
-    const login = useMutation(trpc.auth.login.mutationOptions({
+            if(!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || "Login Failed");
+            }
+
+            return response.json();
+        },
+
         onError: (error) => {
             toast.error(error.message);
         },
         onSuccess: () => {
             router.push("/");
-        }
-    }));
+        },
+    });
 
     const form = useForm<z.infer<typeof loginSchema>>({
         mode: "all",

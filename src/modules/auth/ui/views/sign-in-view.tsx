@@ -33,7 +33,7 @@ export const SignInView = () => {
 
     const login = useMutation({
         mutationFn: async (values: z.infer<typeof loginSchema>) => {
-            const response = await fetch("api/users/login", {
+            const response = await fetch("/api/users/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

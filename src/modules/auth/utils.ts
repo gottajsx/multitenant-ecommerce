@@ -10,6 +10,7 @@ export const generateAuthCookie = async ({
     value,
 }: Props) => {
     const cookies = await getCookies();
+
     cookies.set({
         name: `${prefix}-token`,
         value: value,

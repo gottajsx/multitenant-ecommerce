@@ -8,6 +8,7 @@ import { SearchInput } from "./search-input";
 import { Categories } from "./categories";
 import { useParams } from "next/navigation";
 import { DEFAULT_BG_COLOR } from "../../../constants";
+import { BreadcrumbNavigation } from "./breadcrumbs-navigation";
 
 
 export const SearchFilters = () => {
@@ -33,6 +34,11 @@ export const SearchFilters = () => {
             <div className="hidden lg:block">
                 <Categories data={data} />
             </div>
+            <BreadcrumbNavigation
+                activeCategoryName={activeCategoryName}
+                activeCategory={activeCategory}
+                activeSubcategoryName={activeSubcategoryName}
+            />
         </div>
     );
 };

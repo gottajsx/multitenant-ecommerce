@@ -41,6 +41,9 @@ export const ProductFilters = () => {
                     Clear
                 </button>
             </div>
+            <ProductFilter title="Price" className="border-b-0">
+                <p>Price filter!</p>
+            </ProductFilter>
         </div>     
     )
 }

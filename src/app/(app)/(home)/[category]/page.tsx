@@ -7,15 +7,24 @@ import { Suspense } from "react";
 interface Props {
     params: Promise<{
         category: string;
-    }>
+    }>,
+    searchParams: Promise<{
+        minPrice: string | undefined,
+        maxPrice: string | undefined,
+    }>;
 }
 
-const Page = async ({ params }: Props) => {
+const Page = async ({ params, searchParams}: Props) => {
     const { category } = await params;
+    const { minPrice, maxPrice } = await searchParams;
+
+    console.log({minPrice, maxPrice}, "RSC");
 
     const queryClient = getQueryClient();
     void queryClient.prefetchQuery(trpc.products.getMany.queryOptions({
         category,
+        maxPrice,
+        minPrice,
     }));
 
     return(

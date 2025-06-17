@@ -20,16 +20,16 @@ export const productsRouter = createTRPCRouter({
             const where: Where = {};
             let sort: Sort = "-createdAt";
 
-            if (input.sort == "trending") {
-                sort = "name";
-            }
-
-            if (input.sort == "hot_and_new") {
+            if (input.sort == "curated") {
                 sort = "-createdAt";
             }
 
-            if (input.sort == "trending") {
+            if (input.sort == "hot_and_new") {
                 sort = "+createdAt";
+            }
+
+            if (input.sort == "trending") {
+                sort = "-createdAt";
             }
 
             if (input.minPrice && input.maxPrice) {

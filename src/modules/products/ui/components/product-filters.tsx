@@ -53,6 +53,7 @@ export const ProductFilters = () => {
         setFilters({
             minPrice: "",
             maxPrice: "",
+            tags: [],
         });
     };
 

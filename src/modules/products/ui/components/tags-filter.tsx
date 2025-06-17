@@ -26,6 +26,14 @@ export const TagsFilter = ({ value, onChange}: TagsFilterProps) => {
         }
     ));
 
+    const onClick = (tag: string) => {
+        if (value?.includes(tag)) {
+            onChange(value?.filter((t) => t !== tag) || []);
+        } else {
+            onChange([...(value || []), tag])
+        }
+    };
+
     return (
         <div className="flex flex-col gap-y-2">
             {isLoading ? (
@@ -38,12 +46,12 @@ export const TagsFilter = ({ value, onChange}: TagsFilterProps) => {
                         <div
                             key={tag.id}
                             className="flex items-center justify-between cursor-pointer"
-                            onClick={() => {}}
+                            onClick={() => onClick(tag.name)}
                         >
                             <p className="font-medium">{tag.name}</p>
                             <Checkbox 
-                                checked={false}
-                                onCheckedChange={() => {}}
+                                checked={value?.includes(tag.name)}
+                                onCheckedChange={() => onClick(tag.name)}
                             />
                         </div>
                     ))

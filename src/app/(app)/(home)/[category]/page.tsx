@@ -4,7 +4,7 @@ import { ProductList, ProductListSkeleton } from "@/modules/products/ui/componen
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
-import { loadProductFilters } from "@/modules/products/hooks/use-product-filters";
+import { loadProductFilters } from "@/modules/products/search-params";
 
 interface Props {
     params: Promise<{

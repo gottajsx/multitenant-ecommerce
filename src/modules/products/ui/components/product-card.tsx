@@ -25,8 +25,8 @@ export const ProductCard = ({
     price,
 }: ProductCardProps) => {
     return (
-        <Link href="/">
-            <div className="border rounded-md bg-white overflow-hidden h-full flex flex-col">
+        <Link href={`/products/${id}`}>
+            <div className="hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow border rounded-md bg-white overflow-hidden h-full flex flex-col">
                 <div className="relative aspect-square">
                     <Image 
                         alt={name}
@@ -73,4 +73,10 @@ export const ProductCard = ({
             </div>
         </Link>
     )
-}
+};
+
+export const ProductCardSkeleton = () => {
+    return (
+        <div className="w-full aspect-3/4 bg-neutral-200 rounded-lg animate-pulse" />
+    );
+};

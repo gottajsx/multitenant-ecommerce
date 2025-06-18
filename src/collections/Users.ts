@@ -13,5 +13,15 @@ export const Users: CollectionConfig = {
       unique: true,
       type: "text",
     },
+    {
+      admin: {
+        position: "sidebar",
+      },
+      name: "role",
+      type: "select",
+      defaultValue: ["user"],
+      hasMany: true,
+      options:["super-admin", "user"],
+    },
   ],
 }

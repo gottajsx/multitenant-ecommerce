@@ -13,9 +13,10 @@ import { ProductCard, ProductCardSkeleton } from "./product-card";
 
 interface Props {
     category?: string;
+    tenantSlug?: string;
 }
 
-export const ProductList = ({ category, }: Props) => {
+export const ProductList = ({ category, tenantSlug }: Props) => {
     const [filters] = useProductFilters();
 
     const trpc = useTRPC();
@@ -23,6 +24,7 @@ export const ProductList = ({ category, }: Props) => {
         {
             ...filters,
             category,
+            tenantSlug,
             limit: DEFAULT_LIMIT,
         },
         {

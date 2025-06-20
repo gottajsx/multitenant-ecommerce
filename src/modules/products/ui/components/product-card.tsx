@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { StarIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { generateTenantURL } from "@/lib/utils";
+import { formatCurrency, generateTenantURL } from "@/lib/utils";
 
 
 interface ProductCardProps {
@@ -72,11 +72,7 @@ export const ProductCard = ({
                 <div className="p-4">
                     <div className="relative px-2 py-1 border bg-pink-400 w-fit">
                         <p className="text-sm font-medium">
-                            {new Intl.NumberFormat("en-US", {
-                                style: "currency",
-                                currency: "USD",
-                                maximumFractionDigits: 0,
-                            }).format(Number(price))}
+                            {formatCurrency(price)}
                         </p>
                     </div>
                 </div>

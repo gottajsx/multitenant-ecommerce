@@ -4,6 +4,7 @@ import config from "@payload-config";
 import { NextResponse } from "next/server";
 
 import { stripe } from "@/lib/stripe";
+import { ExpandedLineItem } from "@/modules/checkout/types";
 
 export async function POST(req: Request) {
     let event: Stripe.Event;
@@ -63,9 +64,41 @@ export async function POST(req: Request) {
                             expand: ["line_items.data.price.product"],
                         },
                     );
-            }
-        } catch {
 
+                    if (
+                        !expandedSession.line_items?.data ||
+                        !expandedSession.line_items?.data .length
+                    ) {
+                        throw new Error("No line items found");
+                    }
+
+                    const lineItems = expandedSession.line_items.data as ExpandedLineItem[];
+
+                    for (const item of lineItems) {
+                        await payload.create({
+                            collection: "orders",
+                            data: {
+                                stripeCheckoutSessionId: data.id,
+                                user: user.id,
+                                product: item.price.product.metadata.id,
+                                name: item.price.product.name,
+                            },
+                        });
+                    }
+                    break;
+                
+                default:
+                    throw new Error(`Unhandled event: ${event.type}`);
+
+            }
+        } catch (error){
+            console.log(error)
+            return NextResponse.json(
+                { message: "Webhook handler failed"},
+                { status: 500 },
+            );
         }
     }
+
+    return NextResponse.json({ message: "Received "}, { status: 200 });
 }

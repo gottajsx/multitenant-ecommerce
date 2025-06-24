@@ -97,7 +97,7 @@ export const checkoutRouter = createTRPCRouter({
                 throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Failed to create checkout session"})
             }
 
-            return { url: checkout.url }
+            return { url: checkout.url };
         })
     ,
     getProducts: baseProcedure

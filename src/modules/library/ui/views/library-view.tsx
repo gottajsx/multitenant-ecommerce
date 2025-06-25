@@ -20,7 +20,7 @@ export const LibraryView = () => {
                 </div>
             </header>
             <section className="max-w-(--breakpoint-xl) mx-auto px-4 lg:px-12 py-10">
-
+                
             </section>
         </div>
     );

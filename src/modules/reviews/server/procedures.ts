@@ -55,7 +55,7 @@ export const reviewsRouter = createTRPCRouter({
         create: protectedProcedure
         .input(
             z.object({
-                proceductId: z.string(),
+                productId: z.string(),
                 rating: z.number().min(1, { message: "Rating is required"}).max(5),
                 description: z.string().min(1, { message: "Description is required" }),
             })
@@ -63,7 +63,7 @@ export const reviewsRouter = createTRPCRouter({
         .mutation(async ({ input, ctx}) => {
             const product = await ctx.db.findByID({
                 collection: "products",
-                id: input.proceductId,
+                id: input.productId,
             });
 
             if (!product) {
@@ -78,7 +78,7 @@ export const reviewsRouter = createTRPCRouter({
                 where: {
                     and: [
                         {
-                            product: { equals: input.proceductId}
+                            product: { equals: input.productId}
                         },
                         {
                             user: { equals: ctx.session.user.id }

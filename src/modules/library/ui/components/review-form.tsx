@@ -2,11 +2,12 @@ import { z } from "zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-//import { StarPicker } from "@/component/star-picker";
+import { StarPicker } from "@/components/star-picker";
 import { 
     Form, 
     FormControl,
@@ -32,6 +33,16 @@ const formSchema = z.object({
 export const ReviewForm = ({ productId, initialData}: Props) => {
     const [isPreview, setIsPreview] = useState(!!initialData)
 
+    const trpc = useTRPC();
+    const createReview = useMutation(trpc.reviews.create.mutationOptions({
+        onSuccess: () => {},
+        onError: () => {},
+    }))
+    const updateReview = useMutation(trpc.reviews.update.mutationOptions({
+        onSuccess: () => {},
+        onError: () => {},
+    }))
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -40,8 +51,20 @@ export const ReviewForm = ({ productId, initialData}: Props) => {
         },
     });
 
-    const onSubmit = (data: z.infer<typeof formSchema>) => {
-        console.log(data);
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
+        if (initialData) {
+            updateReview.mutate({
+                reviewId: initialData.id,
+                rating: values.rating,
+                description: values.description,
+            })
+        } else {
+            createReview.mutate({
+                productId,
+                rating: values.rating,
+                description: values.description,
+            })
+        }
     }
 
     return(
@@ -53,6 +76,22 @@ export const ReviewForm = ({ productId, initialData}: Props) => {
                 <p className="font-medium">
                     {isPreview ? "Your rating" : "Liked it? Give it a rating"}
                 </p>
+                <FormField 
+                    control={form.control}
+                    name="rating"
+                    render={({ field}) => (
+                        <FormItem>
+                            <FormControl>
+                                <StarPicker 
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    disabled={isPreview}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
                 <FormField 
                     control={form.control}
                     name="description"

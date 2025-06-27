@@ -20,6 +20,10 @@ export const StarPicker = ({
 }: StarPickerProps) => {
     const [hoverValue, setHoverValue] = useState(0);
 
+    const handleChange = (value: number) => {
+        onChange?.(value)
+    }
+
     return(
         <div
             className={cn(
@@ -37,7 +41,7 @@ export const StarPicker = ({
                         "p-0.5 hover:scale-110 transition",
                         !disabled && "cursor-pointer"
                     )}
-                    onClick={() => onChange?.(star)}
+                    onClick={() => handleChange(star)}
                     onMouseEnter={() => setHoverValue(star)}
                     onMouseLeave={() => setHoverValue(0)}
                 >

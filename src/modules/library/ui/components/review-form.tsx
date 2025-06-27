@@ -1,8 +1,9 @@
 import { z } from "zod";
 import { useState } from "react";
+import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
 import { Button } from "@/components/ui/button";
@@ -34,13 +35,28 @@ export const ReviewForm = ({ productId, initialData}: Props) => {
     const [isPreview, setIsPreview] = useState(!!initialData)
 
     const trpc = useTRPC();
+    const queryClient = useQueryClient()
     const createReview = useMutation(trpc.reviews.create.mutationOptions({
-        onSuccess: () => {},
-        onError: () => {},
+        onSuccess: () => {
+            queryClient.invalidateQueries(trpc.reviews.getOne.queryOptions({
+                productId,
+            }))
+            setIsPreview(true);
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
     }))
     const updateReview = useMutation(trpc.reviews.update.mutationOptions({
-        onSuccess: () => {},
-        onError: () => {},
+        onSuccess: () => {
+            queryClient.invalidateQueries(trpc.reviews.getOne.queryOptions({
+                productId,
+            }))
+            setIsPreview(true);
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
     }))
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -111,7 +127,7 @@ export const ReviewForm = ({ productId, initialData}: Props) => {
                 {!isPreview && (
                     <Button
                         variant="elevated"
-                        disabled={false}
+                        disabled={createReview.isPending || updateReview.isPending}
                         type="submit"
                         size="lg"
                         className="bg-black text-white hover:bg-pink-400 hover:text-primary w-fit"
@@ -126,7 +142,7 @@ export const ReviewForm = ({ productId, initialData}: Props) => {
                     size="lg"
                     type="button"
                     variant="elevated"
-                    className="w-fit"
+                    className="w-fit mt-4"
                 >
                     Edit
                 </Button>
